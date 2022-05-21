@@ -9,10 +9,7 @@
         mc:Ignorable="d"
         x:Name="mWindow"
         Title="MainWindow" Height="800" Width="1200">
-    <Window.Resources>
-        <local:XamlConverter x:Key="MyConverter"/>
-        <local:StringConverter x:Key="ToString"/>
-    </Window.Resources>
+    
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -24,37 +21,24 @@
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="0"/>
             </Border.Effect>
-            <Grid Margin="10 10 10 0">
+            <Grid x:Name="gridTop" Margin="10 10 10 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Button Grid.Column="0" Grid.Row="0" Content="Заявки" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" VerticalAlignment="Bottom"/>
-                <Button Grid.Column="0" Grid.Row="1" Content="▼" Cursor="Hand" Style="{DynamicResource MaterialDesignFlatButton}" VerticalAlignment="Bottom" Click="Button_Click" />
-                <Popup x:Name="popup" StaysOpen="False" Placement="Mouse" AllowsTransparency="True">
-                    <Border Padding="15">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="0"/>
-                        </Border.Effect>
-                        <StackPanel Background="#FF7748CE">
-                            <RadioButton x:Name="rButton1" Style="{DynamicResource MaterialDesignAccentRadioButton}" GroupName="Orders" Margin="15" Content="Текущие заявки" IsChecked="True" FontSize="14" FontWeight="Bold" Foreground="White"/>
-                            <RadioButton x:Name="rButton2" Style="{DynamicResource MaterialDesignAccentRadioButton}" GroupName="Orders" Margin="15" Content="Завершенные заявки" FontSize="14" FontWeight="Bold" Foreground="White"/>
-                            <RadioButton x:Name="rButton3" Style="{DynamicResource MaterialDesignAccentRadioButton}" GroupName="Orders" Margin="15" Content="Все заявки" FontSize="14" FontWeight="Bold" Foreground="White"/>
-                        </StackPanel>
-                    </Border>
-                </Popup>
+                <Button Grid.Column="0" Content="Заявки" Style="{DynamicResource MaterialDesignFlatButton}" VerticalAlignment="Stretch" FontSize="20" Cursor="Hand"/>
             </Grid>
         </Border>
 
-        <TextBlock Grid.Row="1" Text="{Binding ElementName=rButton1, Path=Content, Converter={StaticResource ToString}}" FontSize="{Binding ElementName=mWindow, Path=ActualHeight, Converter={StaticResource MyConverter}}" VerticalAlignment="Center" Margin="30 0" Style="{DynamicResource MaterialDesignCharacterCounterTextBlock}"/>
+        <ComboBox x:Name="comboBoxOrders" Grid.Row="1" Margin="30 0" Width="300" HorizontalAlignment="Left" Background="White" Padding="20 3" Style="{DynamicResource MaterialDesignOutlinedComboBox}" FontSize="14" FontWeight="Normal" Foreground="#FF585858">
+            <ComboBoxItem Content="Текущие заявки" IsSelected="True"/>
+            <ComboBoxItem Content="Завершенные заявки"/>
+            <ComboBoxItem Content="Все заявки"/>
+        </ComboBox>
 
-        <Border Grid.Row="2" MinWidth="400" Margin="30 0" Background="White" VerticalAlignment="Top" Padding="30" MinHeight="500" >
+        <Border Grid.Row="2" MinWidth="400" Margin="30 0" Background="White" VerticalAlignment="Top" Padding="30" MinHeight="500" CornerRadius="3" >
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="0"/>
             </Border.Effect>
@@ -82,10 +66,13 @@
                 </ListView>
                 <Grid Grid.Column="1" Margin="30 0 0 0">
                     <StackPanel>
-                        <TextBox x:Name="modelTextBox" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Модель" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow"/>
-                        <TextBox x:Name="manufacturerTextBox" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Производитель" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow"/>
-                        <TextBox x:Name="priceTextBox" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Цена" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow"/>
-                        <Button x:Name="saveButton" Margin="0 0 0 10" Content="Сохранить" Cursor="Hand" Click="saveButton_Click"/>
+                        <TextBox x:Name="modelTextBox" Text="{Binding ElementName=phoneList, Path=SelectedItem.Title, Mode=TwoWay}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Модель" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow"/>
+                        <TextBox x:Name="manufacturerTextBox" Text="{Binding ElementName=phoneList, Path=SelectedItem.Company}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Производитель" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow"/>
+                        <TextBox x:Name="priceTextBox" Text="{Binding ElementName=phoneList, Path=SelectedItem.Price}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Цена" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="saveButton" Margin="0 0 10 10" Content="Сохранить" Cursor="Hand" Click="saveButton_Click"/>
+                            <Button x:Name="addButton" Margin="0 0 10 10" Content="Добавить" Cursor="Hand" Click="addButton_Click"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
                 <GridSplitter Width="5" Background="Gray" VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.Column="0"/>

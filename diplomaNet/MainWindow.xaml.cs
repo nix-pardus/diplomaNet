@@ -20,6 +20,7 @@ namespace diplomaNet
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -27,19 +28,22 @@ namespace diplomaNet
 
         private void phoneList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            modelTextBox.Text = ((Phone)phoneList.SelectedItems[0]).Title;
-            manufacturerTextBox.Text = ((Phone)phoneList.SelectedItems[0]).Company;
-            priceTextBox.Text = ((Phone)phoneList.SelectedItems[0]).Price.ToString();
+            //modelTextBox.Text = ((Phone)phoneList.SelectedItems[0]).Title;
+            //manufacturerTextBox.Text = ((Phone)phoneList.SelectedItems[0]).Company;
+            //priceTextBox.Text = ((Phone)phoneList.SelectedItems[0]).Price.ToString();
         }
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            ((Phone)phoneList.SelectedItems[0]).Title = modelTextBox.Text;
+            //((Phone)phoneList.SelectedItems[0]).Title = modelTextBox.Text;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            popup.IsOpen = true;
+            Phone phone = new Phone();
+            phone.Title = modelTextBox.Text;
+            phone.Company = manufacturerTextBox.Text;
+            phone.Price = Int32.Parse(priceTextBox.Text);
         }
     }
 
