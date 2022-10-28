@@ -1,0 +1,84 @@
+﻿<Window x:Class="diplomaNet.AddOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:diplomaNet"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        MinHeight="450" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner" WindowStyle="None">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="clientsListViewBorder" Grid.Row="0" Grid.RowSpan="2" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3" Padding="0,0,0,5">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Gray" Opacity="0.5"/>
+            </Border.BorderBrush>
+            <StackPanel>
+
+                <Label Content="Выберите клиента" FontSize="10" Foreground="#DD757575"/>
+                <TextBox Name="searchClientTextBox" Margin="5" Cursor="Arrow" materialDesign:HintAssist.Hint="Поиск" Style="{StaticResource MaterialDesignFloatingHintTextBox}"></TextBox>
+                <ListView x:Name="addOrderClientsListView" MaxHeight="200" ItemsSource="{Binding Clients, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AddOrderWindow}}}" Cursor="Hand" SelectionMode="Single">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Aqua"/>
+                            </Style.Resources>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Id}">Id</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=FullName}">ФИО</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Phone}">Телефон</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Address}">Адрес</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </Border>
+
+        <Border x:Name="workListBorder" Grid.Row="2" Grid.RowSpan="2" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3" Padding="0,0,0,5" Margin="0,10,0,0">
+            <Border.BorderBrush>
+                <SolidColorBrush Color="Gray" Opacity="0.5"/>
+            </Border.BorderBrush>
+            <StackPanel>
+                <Label Content="Список работ" FontSize="10" Foreground="#DD757575"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                    <StackPanel x:Name="workListStackPanel" MaxHeight="200">
+                        <Grid x:Name="workGrid1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0.2*"/>
+                                <ColumnDefinition Width="0.05*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" Name="workTextBox1" materialDesign:HintAssist.Hint="Описание работы" Tag="1" Margin="5" Cursor="Arrow" Style="{StaticResource MaterialDesignFloatingHintTextBox}" MaxWidth="500"/>
+                            <TextBox Grid.Column="1" Name="workPriceTextBox1" Text="0" materialDesign:HintAssist.Hint="Цена" Tag="1" Margin="5" Cursor="Arrow" Style="{StaticResource MaterialDesignFloatingHintTextBox}" MaxWidth="100" TextChanged="workPriceTextBox1_TextChanged"/>
+                            <Border Grid.Column="2" BorderThickness="1,1,1,1" Padding="7,0,7,5" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="15,15,15,15" Margin="0,0,5,0">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="#FF848484" Opacity="0.5"/>
+                                </Border.BorderBrush>
+                                <Label x:Name="deleteWorkLabel1" Content="x" Foreground="#DDC30F0F" Cursor="Hand" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,0,0,0" Margin="3,-3,3,0" MouseLeftButtonUp="deleteWorkLabel_MouseLeftButtonUp"/>
+                            </Border>
+                        </Grid>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+                <Label x:Name="addWorkLabel" Content="+" Foreground="#DD2D9229" Cursor="Hand" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,0,0,0" Margin="3,-3,3,0" MouseLeftButtonUp="addWorkLabel_MouseLeftButtonUp"/>
+            </StackPanel>
+        </Border>
+        
+        <WrapPanel Grid.Row="5" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button x:Name="okBtn" IsDefault="True" MinWidth="60" Margin="0,0,10,0" Click="Accept_Click">Добавить</Button>
+            <Button IsCancel="True" MinWidth="60" Cursor="Hand">Отмена</Button>
+        </WrapPanel>
+    </Grid>
+</Window>
