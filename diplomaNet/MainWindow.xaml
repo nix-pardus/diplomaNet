@@ -13,6 +13,7 @@
         Title="SB Orders" Height="800" Width="1200" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <view:ListViewHiegthConverter x:Key="ListViewHiegthConverter"/>
         <view:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
         <view:StatusConverter x:Key="statusConverter"/>
         <view:ClientConverter x:Key="clientConverter"/>
@@ -59,7 +60,7 @@
                                 <ComboBoxItem Content="Все заказы"/>
                             </ComboBox>
 
-                            <ListView x:Name="orderListView" Grid.Row="1" ItemsSource="{Binding Orders, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" SelectionMode="Single">
+                            <ListView x:Name="orderListView" Grid.Row="1" Margin="0 0 0 40" ItemsSource="{Binding Orders, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" SelectionMode="Single">
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn DisplayMemberBinding="{Binding Path=Id}">Номер заказа</GridViewColumn>
@@ -69,6 +70,10 @@
                                     </GridView>
                                 </ListView.View>
                             </ListView>
+                            <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 20 0">
+                                <Button x:Name="addButton" Width="150" Content="Добавить" Cursor="Hand" Click="addButton_Click"/>
+                                <Button x:Name="deleteButton" Content="Удалить" Width="150" Margin="15 0" Cursor="Hand" Click="deleteButton_Click" IsEnabled="{Binding SelectedItem, Converter={StaticResource NullToBooleanConverter}, ElementName=orderListView}"/>
+                            </StackPanel>
                         </Grid>
 
                         <Grid Grid.Column="1" Margin="30 0 0 0">
@@ -86,11 +91,9 @@
                                     <TextBox x:Name="employeesTextBox" Grid.Column="0" Text="{Binding ElementName=orderListView, Path=SelectedItem.Employees, Converter={StaticResource employeesConverter}}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Назначеные работники" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow" IsReadOnly="True"/>
                                     <Button x:Name="selectEmployeeBtn" Content="..." Cursor="Hand" Grid.Column="1" Click="selectEmployeeBtn_Click" IsEnabled="{Binding SelectedItem, Converter={StaticResource NullToBooleanConverter}, ElementName=orderListView}"/>
                                 </Grid>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button x:Name="addButton" Margin="0 0 10 10" Content="Добавить" Cursor="Hand" Click="addButton_Click"/>
-                                    <Button x:Name="editButton" Margin="0 0 10 10" Content="Изменить" Cursor="Hand" IsEnabled="{Binding SelectedItem, Converter={StaticResource NullToBooleanConverter}, ElementName=orderListView}" Click="editButton_Click"/>
-                                    <Button x:Name="deleteButton" Margin="0 0 10 10" Content="Удалить" Cursor="Hand" Click="deleteButton_Click" IsEnabled="{Binding SelectedItem, Converter={StaticResource NullToBooleanConverter}, ElementName=orderListView}"/>
-                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                <Button x:Name="editButton" Content="Изменить" Width="150" Cursor="Hand" IsEnabled="{Binding SelectedItem, Converter={StaticResource NullToBooleanConverter}, ElementName=orderListView}" Click="editButton_Click"/>
                             </StackPanel>
                         </Grid>
                         <GridSplitter Width="5" Background="Gray" VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.Column="0"/>
@@ -103,7 +106,7 @@
             <!--Вкладка "Клиенты"-->
             <TabItem Header="Клиенты">
 
-                <Border MinWidth="400" Margin="30 0" Background="White" VerticalAlignment="Top" Padding="30" MinHeight="500" CornerRadius="3" >
+                <Border x:Name="border" MinWidth="400" Margin="30 0 30 10" Background="White" VerticalAlignment="Top" Padding="30" MinHeight="100" CornerRadius="3" MaxHeight="{Binding ActualHeight, ElementName=mainGrid, Mode=OneWay}" >
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="0"/>
                     </Border.Effect>
@@ -114,7 +117,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <ListView x:Name="clientsListView" Grid.Column="0" SelectionChanged="clientsListView_SelectionChanged" ItemsSource="{Binding Clients, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+                        <ListView x:Name="clientsListView" Grid.Column="0" Margin="0 0 0 40" SelectionChanged="clientsListView_SelectionChanged" ItemsSource="{Binding Clients, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn DisplayMemberBinding="{Binding Path=Id}">Id</GridViewColumn>
@@ -125,15 +128,19 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0 0 20 0">
+                            <Button x:Name="addClientButton" Content="Добавить" Width="150" Cursor="Hand" Click="addClientButton_Click"/>
+                            <Button x:Name="deleteClientButton" Width="150" Margin="15 0" Content="Удалить" Cursor="Hand" Click="deleteClientButton_Click"/>
+                        </StackPanel>
 
                         <Grid Grid.Column="1" Margin="30 0 0 0">
                             <StackPanel>
                                 <TextBox x:Name="clientIdTextBox" Text="{Binding ElementName=clientsListView, Path=SelectedItem.Id}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Id клиента" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow" IsReadOnly="True"/>
                                 <TextBox x:Name="clientNameTextBox" Text="{Binding ElementName=clientsListView, Path=SelectedItem.FullName, Mode=OneWay}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="ФИО" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow" IsReadOnly="True"/>
-                                
+
                                 <TextBox x:Name="addressTextBox" Text="{Binding ElementName=clientsListView, Path=SelectedItem.Address}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Адрес" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow" IsReadOnly="True"/>
                                 <TextBox x:Name="phoneTextBox" Text="{Binding ElementName=clientsListView, Path=SelectedItem.Phone}" Margin="0 0 0 10" materialDesign:HintAssist.Hint="Телефон" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Cursor="Arrow" IsReadOnly="True"/>
-                                <ListView x:Name="customerOrdersListView">
+                                <ListView x:Name="customerOrdersListView" Margin="0 0 0 40" MaxHeight="{Binding ActualHeight, Converter={StaticResource ListViewHiegthConverter}, ElementName=border, Mode=OneWay}">
                                     <ListView.View>
                                         <GridView>
                                             <GridViewColumn DisplayMemberBinding="{Binding Path=Id}">Номер заказа</GridViewColumn>
@@ -142,11 +149,10 @@
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
-                                <StackPanel Orientation="Horizontal">
-                                    <Button x:Name="addClientButton" Margin="0 0 10 10" Content="Добавить" Cursor="Hand" Click="addClientButton_Click"/>
-                                    <Button x:Name="editClientButton" Margin="0 0 10 10" Content="Изменить" Cursor="Hand" Click="editClientButton_Click"/>
-                                    <Button x:Name="deleteClientButton" Margin="0 0 10 10" Content="Удалить" Cursor="Hand" Click="deleteClientButton_Click"/>
-                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                                <Button x:Name="editClientButton" Width="150" Content="Изменить" Cursor="Hand" Click="editClientButton_Click"/>
+                                <TextBlock x:Name="textBlock" Text="{Binding ActualHeight, Converter={StaticResource ListViewHiegthConverter}, ElementName=border, Mode=OneWay}"/>
                             </StackPanel>
                         </Grid>
                         <GridSplitter Width="5" Background="Gray" VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.Column="0"/>
@@ -157,7 +163,7 @@
             </TabItem>
 
             <!--Вкладка "Сотрудники"-->
-            
+
             <TabItem Header="Сотрудники">
 
                 <Border MinWidth="400" Margin="30 0" Background="White" VerticalAlignment="Top" Padding="30" MinHeight="500" CornerRadius="3" >

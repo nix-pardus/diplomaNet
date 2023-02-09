@@ -61,7 +61,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBox Grid.Column="0" Name="workTextBox1" materialDesign:HintAssist.Hint="Описание работы" Tag="1" Margin="5" Cursor="Arrow" Style="{StaticResource MaterialDesignFloatingHintTextBox}" MaxWidth="500"/>
-                            <TextBox Grid.Column="1" Name="workPriceTextBox1" Text="0" materialDesign:HintAssist.Hint="Цена" Tag="1" Margin="5" Cursor="Arrow" Style="{StaticResource MaterialDesignFloatingHintTextBox}" MaxWidth="100" TextChanged="workPriceTextBox1_TextChanged"/>
+                            <TextBox Grid.Column="1" Name="workPriceTextBox1" Text="" materialDesign:HintAssist.Hint="Цена" Tag="1" Margin="5" Cursor="Arrow" Style="{StaticResource MaterialDesignFloatingHintTextBox}" MaxWidth="100" TextChanged="workPriceTextBox1_TextChanged"/>
                             <Border Grid.Column="2" BorderThickness="1,1,1,1" Padding="7,0,7,5" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="15,15,15,15" Margin="0,0,5,0">
                                 <Border.BorderBrush>
                                     <SolidColorBrush Color="#FF848484" Opacity="0.5"/>

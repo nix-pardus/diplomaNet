@@ -104,6 +104,7 @@
     <Compile Include="View\CostWorkConverter.cs" />
     <Compile Include="View\CountOrdersConverter.cs" />
     <Compile Include="View\EmployeesConverter.cs" />
+    <Compile Include="View\ListViewHiegthConverter.cs" />
     <Compile Include="View\NullToBooleanConverter.cs" />
     <Compile Include="View\StatusConverter.cs" />
     <Compile Include="View\WorkListConverter.cs" />
